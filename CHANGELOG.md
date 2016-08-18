@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1 - 2016-08-18
+- added 'neighborhood' parsing
+- fixed typo in validator
+- added optional callback (triggered when an address is selected)
+
 ## 0.5.0 - 2015-11-29
 - [pull #13](https://github.com/vskosp/vsGoogleAutocomplete/pull/13) Added `vsDistrict` for parsing district.
 
