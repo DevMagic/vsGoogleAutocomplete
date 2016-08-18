@@ -1,7 +1,7 @@
 /**
- * vsGoogleAutocomplete - v0.5.0 - 2015-11-29
+ * vsGoogleAutocomplete - v0.5.0 - 2016-08-18
  * https://github.com/vskosp/vsGoogleAutocomplete
- * Copyright (c) 2015 K.Polishchuk
+ * Copyright (c) 2016 K.Polishchuk
  * License: MIT
  */
 (function (window, document) {
@@ -167,7 +167,7 @@ angular.module('vsGoogleAutocomplete').directive('vsAutocompleteValidator', ['vs
 			});
 
 			// publish autocomplete errors
-			modelCtrl.vsAutocompleteErorr = validator.error;
+			modelCtrl.vsAutocompleteError = validator.error;
 		}
 	};
 }]);

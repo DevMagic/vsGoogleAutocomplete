@@ -1,7 +1,7 @@
 /**
- * vsGoogleAutocomplete - v0.5.0 - 2015-11-29
+ * vsGoogleAutocomplete - v0.5.0 - 2016-08-18
  * https://github.com/vskosp/vsGoogleAutocomplete
- * Copyright (c) 2015 K.Polishchuk
+ * Copyright (c) 2016 K.Polishchuk
  * License: MIT
  */
 (function (window, document) {
@@ -66,6 +66,14 @@ angular.module('vsGoogleAutocomplete').factory('vsGooglePlaceUtility', function(
 		return street;
 	}
 
+	function getNeighborhood (place) {
+		return getAddrComponent(place, { 
+			sublocality_level_1 : 'long_name',
+			sublocality : 'long_name',
+			political : 'long_name' 
+		});
+	}
+
 	function getCity(place) {
 		var COMPONENT_TEMPLATE = { locality: 'long_name' },
 			city = getAddrComponent(place, COMPONENT_TEMPLATE);
@@ -121,6 +129,7 @@ angular.module('vsGoogleAutocomplete').factory('vsGooglePlaceUtility', function(
 		getPlaceId: getPlaceId,
 		getStreetNumber: getStreetNumber,
 		getStreet: getStreet,
+		getNeighborhood : getNeighborhood,
 		getCity: getCity,
 		getState: getState,
 		getCountryShort: getCountryShort,
@@ -142,6 +151,7 @@ angular.module('vsGoogleAutocomplete').directive('vsGoogleAutocomplete', ['vsGoo
 			vsPlaceId: '=?',
 			vsStreetNumber: '=?',
 			vsStreet: '=?',
+			vsNeighborhood: '=?',
 			vsCity: '=?',
 			vsState: '=?',
 			vsCountryShort: '=?',
@@ -149,7 +159,8 @@ angular.module('vsGoogleAutocomplete').directive('vsGoogleAutocomplete', ['vsGoo
 			vsPostCode: '=?',
 			vsLatitude: '=?',
 			vsLongitude: '=?',
-			vsDistrict: '=?'
+			vsDistrict: '=?',
+			vsCallback: '&'
 		},
 		controller: ['$scope', '$attrs', function($scope, $attrs) {
 			this.isolatedScope = $scope;
@@ -162,6 +173,7 @@ angular.module('vsGoogleAutocomplete').directive('vsGoogleAutocomplete', ['vsGoo
 				$scope.vsPlaceId       = !!$attrs.vsPlaceId  && place     ? vsGooglePlaceUtility.getPlaceId(place)      : undefined;
 				$scope.vsStreetNumber  = !!$attrs.vsStreetNumber && place ? vsGooglePlaceUtility.getStreetNumber(place) : undefined;
 				$scope.vsStreet        = !!$attrs.vsStreet && place       ? vsGooglePlaceUtility.getStreet(place)       : undefined;
+				$scope.vsNeighborhood  = !!$attrs.vsNeighborhood && place ? vsGooglePlaceUtility.getNeighborhood(place) : undefined;
 				$scope.vsCity          = !!$attrs.vsCity && place         ? vsGooglePlaceUtility.getCity(place)         : undefined;
 				$scope.vsPostCode      = !!$attrs.vsPostCode && place     ? vsGooglePlaceUtility.getPostCode(place)     : undefined;
 				$scope.vsState         = !!$attrs.vsState && place        ? vsGooglePlaceUtility.getState(place)        : undefined;
@@ -170,6 +182,8 @@ angular.module('vsGoogleAutocomplete').directive('vsGoogleAutocomplete', ['vsGoo
 				$scope.vsLatitude      = !!$attrs.vsLatitude && place     ? vsGooglePlaceUtility.getLatitude(place)     : undefined;
 				$scope.vsLongitude     = !!$attrs.vsLongitude && place    ? vsGooglePlaceUtility.getLongitude(place)    : undefined;
 				$scope.vsDistrict      = !!$attrs.vsDistrict && place     ? vsGooglePlaceUtility.getDistrict(place)     : undefined;
+				if($scope.vsCallback)
+					$scope.vsCallback();
 			};
 		}],
 		link: function(scope, element, attrs, ctrls) {
